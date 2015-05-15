@@ -1,6 +1,4 @@
 # HotsScraper
-Hero of the Storm Web Scraper
-==============
 
 Node service for scraping Heroes of the Storm Data
 

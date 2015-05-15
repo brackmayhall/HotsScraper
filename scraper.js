@@ -67,7 +67,7 @@ function getNextHero(ph,index,heroes){
       console.log(heroes[index].slug);
 
     page.open('http://us.battle.net/heroes/en/heroes/'+heroes[index].slug, function (status) {
-      console.log("opened "+heroes[index].slug, status);
+
       page.evaluate(function () { return document.documentElement.innerHTML; }, function (result) {
 
         // now we have the whole body, parse it and select the nodes we want...
@@ -77,23 +77,58 @@ function getNextHero(ph,index,heroes){
             } else {
 
                 var tempHero = new Hero();
-                console.log('got one');
-                
-                /*
-                var main = select(dom, '.all-content-wrapper');
-                var description = {};
-                var skins = [];
-                var stats = [];
-                var type = [];
-                var heroicAbilities = [];
-                var primaryAbilities = [];
-                var heroTrait = {};
-                //console.log(main[0].children[3].children[1].children[2]);
-                */
 
+                
+                var description = select(dom,'.hero-description');
+                console.log(description[0].children[0].raw);
+
+                var skinList = select(dom,'.skin-list li');
+                skinList.forEach(function(skin) {
+                    //printObjectinfo(skin);
+                    var skinName = stripSkinName(skin.attribs['data-ng-click']);
+                    var skinIcon =  'http://us.battle.net' + skin.children[0].attribs['src'];
+                    console.log(skinName);
+                    console.log(skinIcon);
+                })
+                
+                var statList = select(dom,'.hero-stats li');
+                statList.forEach(function(stat) {
+                    var type = stat.children[1].raw;
+                    console.log(stripStatName(type));
+                    var statTypes = stat.children[3].children[3].raw;
+                    console.log(stripStatNumber(statTypes));
+                })
+                
+
+                var role = select(dom,'.hero-role');
+                console.log(role[0].children[0].raw);
+                
+                
+                var primAbilities = select(dom,'.abilities-container__wrapper .abilities-container__ability-box .ability-box__data');
+
+                primAbilities.forEach(function(abil) {
+                  var abilImageLink = 'http://us.battle.net' + abil.children[1].children[1].children[1].children[0].attribs['src'];
+                  var abilIcon =      'http://us.battle.net' + abil.children[1].children[3].children[0].attribs['src'];
+                  var abilName =      abil.children[3].children[1].children[0].raw;
+                  var abilDesc =      abil.children[3].children[3].children[1].children[0].raw;;
+                  console.log(abilImageLink);
+                  console.log(abilIcon);
+                  console.log(abilName);
+                  console.log(abilDesc);
+                })
+                
+                var trait = select(dom,'.trait-icon-container');
+                var traiteIcon = 'http://us.battle.net' + trait[0].children[1].children[1].attribs['src'];
+                var traiteName = trait[0].children[3].children[1].children[0].raw;
+                var traiteDesc = trait[0].children[3].children[3].children[0].raw;
+                console.log(traiteIcon);
+                console.log(traiteName);
+                console.log(traiteDesc);
+                console.log('\n\n\n');
                 // close the page and get the next hero
                 page.close();
                 getNextHero(ph,index+1,heroes);
+                console.log('');
             }
         });
 
@@ -123,23 +158,25 @@ function scrapedAllHeroes(ph) {
 
 
 
-
-
-
-/*
-var object = hero.children[3];
-var output = '';
-for (var property in object) {
-  output += property + ': ' + object[property]+'; ';
+function stripSkinName(str){
+  var unescaped = str.replace('\\\'','');
+  var strippedSkinName = unescaped.match(/'(.*?)'/);
+  return strippedSkinName[1].split('-')[1].trim();
 }
-console.log(output);
-*/
 
+function stripStatName(str){
+  var first = str.replace(/"/g, ""); 
+  var name = first.split(" ").pop();
+  return name;
+}
 
+function stripStatNumber(str){
+  var first = str.replace(/"/g, ""); 
+  var finalStat = first.replace( /^\D+/g, '');
+  return finalStat;
+}
 
-
-
-
+//proto
 var Hero = function() {
     this.name = '';
     this.slug = '';
@@ -151,3 +188,12 @@ var Hero = function() {
     this.trait = '';
     return this;
 };
+
+// util
+function printObjectinfo(object){
+  var output = '';
+  for (var property in object) {
+    output += property + ': ' + object[property]+'; ';
+  }
+  console.log(output);
+}

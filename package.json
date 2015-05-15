@@ -5,8 +5,8 @@
   "main"         : "server.js",
   "author"       : "Scotch",
   "dependencies" : {
-    "express"    : "latest",
-    "request"    : "latest",
-    "cheerio"    : "latest"
+    "phantom"    : "latest",
+    "htmlparser"    : "latest",
+    "soupselect"    : "latest"
   }
 }

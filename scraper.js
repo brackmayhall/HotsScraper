@@ -4,15 +4,15 @@ var select = require('soupselect').select;
 var htmlparser = require("htmlparser");
 var sys = require('sys');
 
+// initial hero get
+getHeroList();
 
-
+// get all hero names and slugs
+function getHeroList() {
 
   phantom.create(function (ph) {
 
-
-
     ph.createPage(function (page) {
-
       page.open("http://us.battle.net/heroes/en/heroes/", function (status) {
         console.log("opened hots? ", status);
         page.evaluate(function () { return document.documentElement.innerHTML; }, function (result) {
@@ -27,64 +27,47 @@ var sys = require('sys');
 
                   var heroesArr = [];
                   heroes.forEach(function(hero) {
-                    //console.log('data-action '+hero.attribs['data-action']);
-                    console.log('href '+hero.attribs['href']);
-                    console.log('children '+hero.children[3].children[0].raw);
-                    console.log('');
-                    /*
-                    var object = hero.children[3];
-                    var output = '';
-                    for (var property in object) {
-                      output += property + ': ' + object[property]+'; ';
-                    }
-                    console.log(output);
-                    */
-                    //var tempHero = {name:hero.attribs['data-action'], slug:hero.attribs['href']};
-                    //heroesArr.push(tempHero);
+                    var tempHero = {name:hero.children[3].children[0].raw, slug:hero.attribs['href']};
+                    heroesArr.push(tempHero);
                   });
+
                   page.close();
-                  console.log('scraped all heroes');
-                  //getHeroes(ph,heroesArr,scrapedAllHeroes);
+                  console.log('got all hero names and slugs');
+                  getHeroes(ph,heroesArr,scrapedAllHeroes);
               }
           });
 
           var parser = new htmlparser.Parser(handler);
           parser.parseComplete(result);
 
-          //ph.exit();
         });
       });
     });
 
-
-
-
-    
   }, {
     dnodeOpts: {
       weak: false
     }
   });
 
+}
 
 
 
+function getNextHero(ph,index,heroes){
 
+    if(index >= heroes.length){
+      // exit detailed async loop and start over
+      scrapedAllHeroes(ph);
+      return;
+    }
 
-function getHeroes(ph,heroes,callback) {
-  /*
-  heroes.forEach(function(hero) {
-    console.log('inside heroes: ' + hero.name +' : '+ hero.slug);
-    // http://us.battle.net/heroes/en/heroes/+ 
-  });
-  callback('got all heroes');
-  ph.exit();
-  */
-  
     ph.createPage(function (page,test) {
 
-    page.open('http://us.battle.net/heroes/en/heroes/'+heroes[0].slug, function (status) {
-      console.log("opened hots? ", status);
+      console.log(heroes[index].slug);
+
+    page.open('http://us.battle.net/heroes/en/heroes/'+heroes[index].slug, function (status) {
+      console.log("opened "+heroes[index].slug, status);
       page.evaluate(function () { return document.documentElement.innerHTML; }, function (result) {
 
         // now we have the whole body, parse it and select the nodes we want...
@@ -93,31 +76,78 @@ function getHeroes(ph,heroes,callback) {
                 console.log("Error: " + err);
             } else {
 
-                var altName = select(dom, '.hero-identity__title paragraph__heading--alternate ng-binding');
-                console.log(dom);
+                var tempHero = new Hero();
+                console.log('got one');
+                
+                /*
+                var main = select(dom, '.all-content-wrapper');
+                var description = {};
+                var skins = [];
+                var stats = [];
+                var type = [];
+                var heroicAbilities = [];
+                var primaryAbilities = [];
+                var heroTrait = {};
+                //console.log(main[0].children[3].children[1].children[2]);
+                */
+
+                // close the page and get the next hero
                 page.close();
-/*
-                heroes.forEach(function(hero) {
-                  console.log('name2: ' + hero.attribs['data-action']);
-                  console.log('slug2: ' + hero.attribs['href']);
-                })
-*/
+                getNextHero(ph,index+1,heroes);
             }
         });
 
         var parser = new htmlparser.Parser(handler);
         parser.parseComplete(result);
 
-        ph.exit();
       });
     });
   });
+}
+
+
+// start getting detail hero information
+function getHeroes(ph,heroes) {
+  getNextHero(ph,0,heroes);    
+}
+
+
+// scraped all detailed hero info.
+// exit ph and 
+function scrapedAllHeroes(ph) {
     
+    ph.exit();
+    // now check all heroes again
+    getHeroList();
 }
 
 
-// callback
-function scrapedAllHeroes(msg) {
-    // I'm the callback
-    console.log(msg);
+
+
+
+
+/*
+var object = hero.children[3];
+var output = '';
+for (var property in object) {
+  output += property + ': ' + object[property]+'; ';
 }
+console.log(output);
+*/
+
+
+
+
+
+
+var Hero = function() {
+    this.name = '';
+    this.slug = '';
+    this.skins = [];
+    this.skills = [];
+    this.type = '';
+    this.heroicAbilities = [];
+    this.primaryAbilities = [];
+    this.trait = '';
+    return this;
+};

@@ -1,9 +1,9 @@
 {
-  "name"         : "node-web-scrape",
+  "name"         : "hots-web-scraper",
   "version"      : "0.0.1",
-  "description"  : "Scrape le web.",
-  "main"         : "server.js",
-  "author"       : "Scotch",
+  "description"  : "Scrape Hots",
+  "main"         : "scraper.js",
+  "author"       : "brackMAYHALL",
   "dependencies" : {
     "phantom"    : "latest",
     "htmlparser"    : "latest",

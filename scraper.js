@@ -63,7 +63,6 @@ function getNextHero(ph,index,heroes){
 
     ph.createPage(function (page,test) {
 
-      console.log(heroes[index].slug);
 
     page.open('http://us.battle.net/heroes/en/heroes/'+heroes[index].slug, function (status) {
 
@@ -76,35 +75,43 @@ function getNextHero(ph,index,heroes){
             } else {
 
                 var tempHero = {};
+                
                 tempHero.name = heroes[index].name;
                 tempHero.slug = heroes[index].slug;
-                
+
+                tempHero.youtubeLink = buildHeroYouTubeLink(select(dom,'.hero-spotlight-main'));
+
+                var franchiseHTML = select(dom,'.franchise-icon');
+                tempHero.franchise = buildHeroFranchise(franchiseHTML);;                
+
                 var descriptionHTML = select(dom,'.hero-description');
-                var heroDescription = descriptionHTML[0].children[0].raw;
-                tempHero.description = heroDescription;
-
-                var skinListHTML = select(dom,'.skin-list li');
-                var skins = buildSkins(skinListHTML);
-                tempHero.skins = skins;
-
-                var statListHTML = select(dom,'.hero-stats li');
-                var stats = buildStats(statListHTML);
-                tempHero.stats = stats;
+                tempHero.description = buildHeroDescription(descriptionHTML);                
 
                 var roleHTML = select(dom,'.hero-role');
-                var role = roleHTML[0].children[0].raw;
-                tempHero.role = role;
+                tempHero.role = buildHeroRole(roleHTML);
+                
+                var traitHTML = select(dom,'.trait-icon-container');
+                tempHero.trait = buildHeroTrait(traitHTML);
+                
+                var heroWebVideoHTML = select(dom,'.hero-skin');
+                var webVideoArr = buildHeroWebVideoLinks(heroWebVideoHTML,heroes[index].slug);
+                
+                var skinListHTML = select(dom,'.skin-list li');
+                var skins = buildHeroSkins(skinListHTML,webVideoArr);
+                tempHero.skins = skins;                
+
+                var statListHTML = select(dom,'.hero-stats li');
+                tempHero.stats = buildHeroStats(statListHTML);
 
                 var abilityHTML = select(dom,'.abilities-container__wrapper .abilities-container__ability-box .ability-box__data');
-                var abilityArr = buildAbilities(abilityHTML);
+                var abilityArr = buildAHerobilities(abilityHTML);
                 tempHero.abilities = abilityArr;
 
-                var traitHTML = select(dom,'.trait-icon-container');
-                var trait = buildTrait(traitHTML);
-                tempHero.trait = trait;
-
-                console.log(tempHero);
-
+                //console.log(tempHero);
+                fs.writeFile('output.json', JSON.stringify(tempHero, null, 4), function(err){
+                  console.log('File successfully written! - Check your project directory for the output.json file');
+                })
+                
                 // close the page and get the next hero
                 page.close();
                 getNextHero(ph,index+1,heroes);
@@ -129,21 +136,192 @@ function getHeroes(ph,heroes) {
 // scraped all detailed hero info.
 // exit ph and 
 function scrapedAllHeroes(ph) {
-    
     ph.exit();
     // now check all heroes again
     getHeroList();
 }
 
-function buildAbilities(abilityHTML){
+function buildHeroYouTubeLink(heroYouTubeHTML){
+
+  var youtubeLink = '';
+
+  try {
+    youtubeLink =  'https://youtu.be/' + heroYouTubeHTML[0].children[1].attribs['data-src'];
+  }
+  catch (e) {
+    return youtubeLink;
+  }
+   
+  return youtubeLink;
+}
+
+function buildHeroFranchise(franchiseHTML){
+
+  var name = '';
+  
+  try {
+    var str = franchiseHTML[0].attribs['class'];
+    name =  str.split(" ").pop();
+  }
+  catch (e) {
+    return youtnameubeLink;
+  }
+
+  return name;
+}
+
+function buildHeroDescription(descriptionHTML){
+
+  var description = '';
+  
+  try {
+    description = descriptionHTML[0].children[0].raw;;
+  }
+  catch (e) {
+    return description;
+  }
+
+  return description;
+}
+
+function buildHeroRole(roleHTML){
+
+  var role = '';
+  
+  try {
+    role = roleHTML[0].children[0].raw;
+  }
+  catch (e) {
+    return role;
+  }
+
+  return role;
+
+}
+
+function buildHeroTrait(traitHTML){
+
+  var trait = {};
+  try {
+    var traitIcon = 'http://us.battle.net' + traitHTML[0].children[1].children[1].attribs['src'];
+    var traitName = traitHTML[0].children[3].children[1].children[0].raw;
+    var traitDescription = traitHTML[0].children[3].children[3].children[0].raw;
+
+    trait = {traitIcon:traitIcon,traitName:traitName,traitDescription:traitDescription};
+  }
+  catch (e) {
+    return trait;
+  }
+
+  return trait;
+}
+
+// TODO merge this with skin
+// stripping functions
+function buildHeroWebVideoLinks(heroWebVideoHTML,heroSlug){
+  var webVideoArr = [];
+
+  heroWebVideoHTML.forEach(function(skin) {
+
+    try {
+      var temp = skin.raw.replace(/"/g, "");
+
+      var temp2 = temp.replace(/selected/g,'');
+      var temp3 = temp2.trim();
+      var temp4 = temp3.split(" ").pop();
+      var temp5 = temp4.trim();
+
+      var finalHeroSlug = heroSlug.replace('/','');
+
+      var finalVid = 'http://media.blizzard.com/heroes/videos/heroes/skins/'+finalHeroSlug+'_'+temp5+'.webm';
+      webVideoArr.push({name:temp5,videoLink:finalVid});
+
+    }
+    catch (e) {
+      console.log(e);
+    }
+
+  })
+
+  return webVideoArr;
+}
+
+
+function buildHeroSkins(skinListHtml,webVideoArr){
+  var skinArr = [];
+  skinListHtml.forEach(function(skin) {
+    try {
+      var temp1 = skin.raw;
+      var temp2 = temp1.replace(/"|'|}/g, ""); 
+      var re = /.*==\s+(.*)\s+data-ng-click.*/;
+      var temp3 = temp2.replace(re, "$1");
+      var temp4 = temp3.trim();
+
+      var videoLinkObj = webVideoArr.filter(function(e) { return e.name === temp4; });
+
+      var skinName = stripSkinName(skin.attribs['data-ng-click']);
+      var skinIcon =  'http://us.battle.net' + skin.children[0].attribs['src'];
+
+      var skin = {};
+      if(videoLinkObj.length > 0){
+        skin = {skinName:skinName,skinIcon:skinIcon,videoLink:videoLinkObj[0].videoLink};
+      } else{
+          skin = {skinName:skinName,skinIcon:skinIcon,videoLink:null};
+      }
+
+
+      skinArr.push(skin);
+    }
+    catch (e) {
+      console.log(e);
+    }
+
+  })
+
+  return skinArr;
+
+}
+
+
+function buildHeroStats(statListHTML){
+  var statArr = [];
+  try {
+    statListHTML.forEach(function(stat) {
+
+      var type = stat.children[1].raw;
+      var finalType = stripStatName(type);
+
+      var statTypes = stat.children[3].children[3].raw;
+      var finalStatNumber = stripStatNumber(statTypes);
+
+      var stat = {type:finalType,value:finalStatNumber};
+      statArr.push(stat);
+    })
+  } catch(e){
+    console.log(e);
+  }
+
+  return statArr;
+}
+
+
+
+// TODO distinguish between heroic and primary
+function buildAHerobilities(abilityHTML){
   var abilityArr = [];
-  abilityHTML.forEach(function(abil) {
+
+  abilityHTML.forEach(function(abil,index) {
+
+    var type = 'primary';
+    if(index > 2){
+      type = 'heroic';
+    }
 
     var abilityImage = 'http://us.battle.net' + abil.children[1].children[1].children[1].children[0].attribs['src'];
     var abilityIcon =      'http://us.battle.net' + abil.children[1].children[3].children[0].attribs['src'];
     var abilityName =      abil.children[3].children[1].children[0].raw;
     var abilityDescription =      abil.children[3].children[3].children[1].children[0].raw;;
-    var ability = {abilityImage:abilityImage, abilityIcon:abilityIcon, abilityName:abilityName,abilityDescription:abilityDescription};
+    var ability = {type:type,abilityImage:abilityImage, abilityIcon:abilityIcon, abilityName:abilityName,abilityDescription:abilityDescription};
     abilityArr.push(ability);
 
   })
@@ -151,42 +329,11 @@ function buildAbilities(abilityHTML){
   return abilityArr;
 }
 
-function buildTrait(traitHTML){
-  var traitIcon = 'http://us.battle.net' + traitHTML[0].children[1].children[1].attribs['src'];
-  var traitName = traitHTML[0].children[3].children[1].children[0].raw;
-  var traitDescription = traitHTML[0].children[3].children[3].children[0].raw;
-  return {traitIcon:traitIcon,traitName:traitName,traitDescription:traitDescription};
-}
 
-function buildStats(statListHTML){
-  var statArr = [];
-  statListHTML.forEach(function(stat) {
 
-    var type = stat.children[1].raw;
-    var finalType = stripStatName(type);
 
-    var statTypes = stat.children[3].children[3].raw;
-    var finalStatNumber = stripStatNumber(statTypes);
 
-    var stat = {type:finalType,value:finalStatNumber};
-    statArr.push(stat);
-  })
 
-  return statArr;
-}
-
-function buildSkins(skinListHtml){
-  var skinArr = [];
-  skinListHtml.forEach(function(skin) {
-    var skinName = stripSkinName(skin.attribs['data-ng-click']);
-    var skinIcon =  'http://us.battle.net' + skin.children[0].attribs['src'];
-    var skin = {skinName:skinName,skinIcon:skinIcon};
-    skinArr.push(skin);
-  })
-
-  return skinArr;
-
-}
 
 // stripping functions
 function stripSkinName(str){
@@ -200,6 +347,7 @@ function stripStatName(str){
   var name = first.split(" ").pop();
   return name;
 }
+
 
 function stripStatNumber(str){
   var first = str.replace(/"/g, ""); 

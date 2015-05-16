@@ -25,8 +25,8 @@ then run the mac version "node macScraper.js"
 * better error checking
 * add a sleep mechanism so not constantly hammering battleNet
 * fix for OSX
-* 
 
+## Example output for a Hero
 ```
 {
   "_id": "abathur/",

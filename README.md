@@ -1,5 +1,6 @@
 # HotsScraper
 ![alt tag](https://raw.github.com/brackmayhall/HotsScraper/master/claw.png)
+
 Node service for scraping Heroes of the Storm Data from battleNet.
 
 Stores heroes locally and watches for changes.

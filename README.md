@@ -14,7 +14,7 @@ run npm install and package.json file will install required node packages.
 * soupselect
 * htmlparser
 * nedb
-* 
+
 ## Todo
 * add better hooks for remote sync
 * better error checking

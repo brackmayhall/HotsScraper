@@ -5,8 +5,9 @@
   "main"         : "scraper.js",
   "author"       : "brackMAYHALL",
   "dependencies" : {
-    "phantom"    : "latest",
+    "phantom"       : "latest",
     "htmlparser"    : "latest",
-    "soupselect"    : "latest"
+    "soupselect"    : "latest",
+     "nedb"        : "latest"
   }
 }

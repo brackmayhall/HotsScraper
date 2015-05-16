@@ -2,6 +2,8 @@ var phantom = require('phantom');
 var fs = require('fs');
 var select = require('soupselect').select;
 var htmlparser = require("htmlparser");
+var Datastore = require('nedb')
+  , db = new Datastore({ filename: 'localHotsNeDb', autoload: true });
 
 // initial hero get
 getHeroList();
@@ -75,7 +77,7 @@ function getNextHero(ph,index,heroes){
             } else {
 
                 var tempHero = {};
-                
+                tempHero._id = heroes[index].slug;
                 tempHero.name = heroes[index].name;
                 tempHero.slug = heroes[index].slug;
 
@@ -108,10 +110,25 @@ function getNextHero(ph,index,heroes){
                 tempHero.abilities = abilityArr;
 
                 //console.log(tempHero);
-                fs.writeFile('output.json', JSON.stringify(tempHero, null, 4), function(err){
-                  console.log('File successfully written! - Check your project directory for the output.json file');
-                })
-                
+
+                db.findOne({ _id: tempHero._id }, function (err, doc) {
+                  // doc is the document Mars
+                  // If no document is found, doc is null
+                  if(doc != null) {
+                    if(JSON.stringify(tempHero) === JSON.stringify(doc) ){
+                      console.log('same');
+                    } else {
+                      console.log('update');
+                      updateHero(tempHero);
+                    }
+                  } else {
+                    console.log('do an insert');
+                      insertHero(tempHero);
+                  }
+
+                  //console.log(doc);
+                });
+
                 // close the page and get the next hero
                 page.close();
                 getNextHero(ph,index+1,heroes);
@@ -125,6 +142,30 @@ function getNextHero(ph,index,heroes){
       });
     });
   });
+}
+
+function insertHero(tempHero){
+  db.insert(tempHero, function (err, newDoc) {   // Callback is optional
+    console.log(tempHero.name + ' inserted');
+    syncRemoteDatabase();
+    // newDoc is the newly inserted document, including its _id
+    // newDoc has no key called notToBeSaved since its value was undefined
+  });
+}
+
+function updateHero(tempHero){
+  db.update({ _id: tempHero._id }, tempHero, {}, function (err, numReplaced) {
+    console.log(tempHero.name + ' updated');
+    syncRemoteDatabase();
+    // numReplaced = 1
+    // The doc #3 has been replaced by { _id: 'id3', planet: 'Pluton' }
+    // Note that the _id is kept unchanged, and the document has been replaced
+    // (the 'system' and inhabited fields are not here anymore)
+  });
+}
+
+function syncRemoteDatabase(){
+  console.log('sync remote database');
 }
 
 // start getting detail hero information

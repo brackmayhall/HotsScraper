@@ -1,6 +1,8 @@
 # HotsScraper
 
-Node service for scraping Heroes of the Storm Data
+Node service for scraping Heroes of the Storm Data from battleNet.
+Stores heroes locally and watches for changes.
+If a change occurs you can use the syncRemoteDatabase function to update a remote database(you will need to make this connection)
 
 run npm install and package.json file will install required node packages.
 
@@ -9,4 +11,4 @@ run npm install and package.json file will install required node packages.
 * phantom
 * soupselect
 * htmlparser
-* sys
+* nedb

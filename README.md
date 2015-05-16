@@ -29,86 +29,88 @@ then run the mac version "node macScraper.js"
 ## Example output for a Hero
 ```
 {
-  "_id": "abathur/",
-  "name": "Abathur",
-  "slug": "abathur/",
-  "youtubeLink": "",
-  "franchise": "starcraft",
-  "description": "Abathur, the Evolution Master of Kerrigan's Swarm, works ceaselessly to improve the Zerg from the genetic level up. His hate for chaos and imperfection almost rivals his hatred of pronouns.",
-  "role": "Specialist",
+  "_id": "kaelthas/",
+  "name": "Kael'thas",
+  "slug": "kaelthas/",
+  "youtubeLink": "https://youtu.be/b215Y8QgA3Y",
+  "franchise": "warcraft",
+  "description": "Like all Blood Elves, Prince Kael'thas was transformed by the fall of Quel'thalas. Desperate to save his people from being consumed by their magical addiction, he joined forces with the Burning Legion and now lords over Tempest Keep.",
+  "role": "Assassin",
   "trait": {
-    "traitIcon": "http://us.battle.net/heroes/static/images/heroes/skills/icons/abathur_locustStrain.jpg",
-    "traitName": "Locust Strain",
-    "traitDescription": "Spawns a Locust to attack down the nearest lane every 15 seconds. Locusts last for 25 seconds."
+    "traitIcon": "http://us.battle.net/heroes/static/images/heroes/skills/icons/kaelthas_verdantSpheres.jpg",
+    "traitName": "Verdant Spheres",
+    "traitDescription": "Activate to make your next Basic Ability more powerful."
   },
   "skins": [
     {
-      "skinName": "Evolution Master",
-      "skinIcon": "http://us.battle.net/heroes/static/images/heroes/skins/thumbnails/abathur_evolutionMaster.jpg?v=58-77",
-      "videoLink": "http://media.blizzard.com/heroes/videos/heroes/skins/abathur_evolutionMaster.webm"
+      "skinName": "The Sun King",
+      "skinIcon": "http://us.battle.net/heroes/static/images/heroes/skins/thumbnails/kaelthas_theSunKing.jpg?v=58-77",
+      "videoLink": "http://media.blizzard.com/heroes/videos/heroes/skins/kaelthas_theSunKing.webm"
     },
     {
-      "skinName": "Master Abathur",
-      "skinIcon": "http://us.battle.net/heroes/static/images/heroes/skins/thumbnails/abathur_masterAbathur.jpg?v=58-77",
-      "videoLink": "http://media.blizzard.com/heroes/videos/heroes/skins/abathur_masterAbathur.webm"
+      "skinName": "Master Kaelthas",
+      "skinIcon": "http://us.battle.net/heroes/static/images/heroes/skins/thumbnails/kaelthas_masterKaelthas.jpg?v=58-77",
+      "videoLink": "http://media.blizzard.com/heroes/videos/heroes/skins/kaelthas_masterKaelthas.webm"
     },
     {
-      "skinName": "Pajamathur Abathur",
-      "skinIcon": "http://us.battle.net/heroes/static/images/heroes/skins/thumbnails/abathur_pajamathurAbathur.jpg?v=58-77",
-      "videoLink": "http://media.blizzard.com/heroes/videos/heroes/skins/abathur_pajamathurAbathur.webm"
-    },
-    {
-      "skinName": "Skelethur Abathur",
-      "skinIcon": "http://us.battle.net/heroes/static/images/heroes/skins/thumbnails/abathur_skelethurAbathur.jpg?v=58-77",
-      "videoLink": "http://media.blizzard.com/heroes/videos/heroes/skins/abathur_skelethurAbathur.webm"
+      "skinName": "StormPunk Kaelthas",
+      "skinIcon": "http://us.battle.net/heroes/static/images/heroes/skins/thumbnails/kaelthas_stormPunkKaelthas.jpg?v=58-77",
+      "videoLink": "http://media.blizzard.com/heroes/videos/heroes/skins/kaelthas_stormPunkKaelthas.webm"
     }
   ],
   "stats": [
     {
       "type": "damage",
-      "value": "3"
+      "value": "9"
     },
     {
       "type": "utility",
-      "value": "7"
+      "value": "5"
     },
     {
       "type": "survivability",
-      "value": "1"
+      "value": "4"
     },
     {
       "type": "complexity",
-      "value": "9"
+      "value": "7"
     }
   ],
   "abilities": [
     {
       "type": "primary",
-      "abilityImage": "http://us.battle.net/heroes/static/images/heroes/skills/thumbnails/abathur_symbiote.jpg",
-      "abilityIcon": "http://us.battle.net/heroes/static/images/heroes/skills/icons/abathur_symbiote.jpg",
-      "abilityName": "Symbiote",
-      "abilityDescription": "Assist another allied Unit or Combat Structure, allowing you to shield them and use new Abilities.  Cannot be used on another Hero's Summons."
+      "abilityImage": "http://us.battle.net/heroes/static/images/heroes/skills/thumbnails/kaelthas_flamestrike.jpg",
+      "abilityIcon": "http://us.battle.net/heroes/static/images/heroes/skills/icons/kaelthas_flamestrike.jpg",
+      "abilityName": "Flamestrike",
+      "abilityDescription": "After a short delay, deal heavy damage in an area. Verdant Spheres increases the radius by 50% and also increases damage dealt."
     },
     {
       "type": "primary",
-      "abilityImage": "http://us.battle.net/heroes/static/images/heroes/skills/thumbnails/abathur_toxicNest.jpg",
-      "abilityIcon": "http://us.battle.net/heroes/static/images/heroes/skills/icons/abathur_toxicNest.jpg",
-      "abilityName": "Toxic Nest",
-      "abilityDescription": "Spawn a mine that becomes active after a short time. Deals moderate damage and reveals the enemy for 4 seconds. Lasts 90 seconds."
+      "abilityImage": "http://us.battle.net/heroes/static/images/heroes/skills/thumbnails/kaelthas_livingBomb.jpg",
+      "abilityIcon": "http://us.battle.net/heroes/static/images/heroes/skills/icons/kaelthas_livingBomb.jpg",
+      "abilityName": "Living Bomb",
+      "abilityDescription": "Deal heavy damage over 3 seconds to an enemy, then they explode dealing moderate damage to all nearby enemies. Casting a second Living Bomb on an enemy causes the previous Living Bomb to explode immediately. Verdant Spheres makes this Ability cost no Mana and have no cooldown."
     },
     {
       "type": "primary",
-      "abilityImage": "http://us.battle.net/heroes/static/images/heroes/skills/thumbnails/abathur_ultimateEvolution.jpg",
-      "abilityIcon": "http://us.battle.net/heroes/static/images/heroes/skills/icons/abathur_ultimateEvolution.jpg",
-      "abilityName": "Ultimate Evolution",
-      "abilityDescription": "Clone target allied Hero and control it for 20 seconds. Abathur has perfected the clone, granting it 20% Ability Power, 20% bonus Attack Damage, and 10% bonus Movement Speed. Cannot use their Heroic Ability."
+      "abilityImage": "http://us.battle.net/heroes/static/images/heroes/skills/thumbnails/kaelthas_gravityLapse.jpg",
+      "abilityIcon": "http://us.battle.net/heroes/static/images/heroes/skills/icons/kaelthas_gravityLapse.jpg",
+      "abilityName": "Gravity Lapse",
+      "abilityDescription": "Stun the first enemy hit for 1.5 seconds. Verdant Spheres causes Gravity Lapse to stun the first 3 enemies hit."
     },
     {
       "type": "heroic",
-      "abilityImage": "http://us.battle.net/heroes/static/images/heroes/skills/thumbnails/abathur_evolveMonstrosity.jpg",
-      "abilityIcon": "http://us.battle.net/heroes/static/images/heroes/skills/icons/abathur_evolveMonstrosity.jpg",
-      "abilityName": "Evolve Monstrosity",
-      "abilityDescription": "Turn an allied Minion or Locust into a Monstrosity. When enemy Minions near the Monstrosity die, it gains 5% Health and 5% Basic Attack damage, stacking up to 30 times. The Monstrosity takes 50% less damage from Minions and Structures.  Using Symbiote on the Monstrosity allows you to control it, in addition to Symbiote's normal benefits."
+      "abilityImage": "http://us.battle.net/heroes/static/images/heroes/skills/thumbnails/kaelthas_phoenix.jpg",
+      "abilityIcon": "http://us.battle.net/heroes/static/images/heroes/skills/icons/kaelthas_phoenix.jpg",
+      "abilityName": "Phoenix",
+      "abilityDescription": "Launch a Phoenix to an area, dealing light damage to enemies along the way. The Phoenix persists for 7 seconds, attacking enemies for light damage and splashing for 50%."
+    },
+    {
+      "type": "heroic",
+      "abilityImage": "http://us.battle.net/heroes/static/images/heroes/skills/thumbnails/kaelthas_pyroblast.jpg",
+      "abilityIcon": "http://us.battle.net/heroes/static/images/heroes/skills/icons/kaelthas_pyroblast.jpg",
+      "abilityName": "Pyroblast",
+      "abilityDescription": "After 2 seconds, cast a slow-moving fireball that deals massive damage to an enemy Hero and nearby enemies."
     }
   ]
 }

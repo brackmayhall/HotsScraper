@@ -1,5 +1,5 @@
-# HotsScraper
-![alt tag](https://raw.github.com/brackmayhall/HotsScraper/master/images/claw.png)
+# HotsScraper ![alt tag](https://raw.github.com/brackmayhall/HotsScraper/master/images/claw.png)
+
 
 Node service for scraping Heroes of the Storm Data from battleNet.
 

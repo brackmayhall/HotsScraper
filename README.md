@@ -11,8 +11,7 @@ run npm install and package.json file will install required node packages.
 
 if on mac install phantom and set path using the following tutorial
 http://blog.just2us.com/2011/05/setting-path-variable-in-mac-permanently/
-
-then run the mac version
+then run the mac version "node macScraper.js"
 
 ## Required packages
 * phantomjs, install this globally(-g) and set PATH to its bin folder

@@ -3,15 +3,14 @@
 
 Node service for scraping Heroes of the Storm Data from battleNet.
 
-Stores heroes locally and watches for changes.
-
-If a change occurs you can use the syncRemoteDatabase function to update a remote database(you will need to make this connection)
-
 run npm install and package.json file will install required node packages.
 
-- if on mac install phantom and set path using the following tutorial
+- on windows install phantomjs and set path to phantomjs bin folder
+
+- on mac install phantom and set path using the following tutorial
 http://blog.just2us.com/2011/05/setting-path-variable-in-mac-permanently/
 - then run the mac version "node macScraper.js"
+- also xcode command line tools will need to be installed for phantomjs to work
 
 ## Required packages
 * phantomjs, install this globally(-g) and set PATH to its bin folder

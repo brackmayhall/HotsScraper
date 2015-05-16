@@ -19,3 +19,4 @@ run npm install and package.json file will install required node packages.
 * add better hooks for remote sync
 * better error checking
 * add a sleep mechanism so not constantly hammering battleNet
+* fix for OSX

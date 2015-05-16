@@ -9,7 +9,7 @@ If a change occurs you can use the syncRemoteDatabase function to update a remot
 
 run npm install and package.json file will install required node packages.
 
-if on mac install phantom and set path using the following tutorial
+if on mac install phantom and set path using the following tutorial \n
 http://blog.just2us.com/2011/05/setting-path-variable-in-mac-permanently/
 then run the mac version "node macScraper.js"
 
@@ -19,12 +19,6 @@ then run the mac version "node macScraper.js"
 * soupselect
 * htmlparser
 * nedb
-
-## Todo
-* add better hooks for remote sync
-* better error checking
-* add a sleep mechanism so not constantly hammering battleNet
-* fix for OSX
 
 ## Example output for a Hero
 ```
@@ -115,3 +109,8 @@ then run the mac version "node macScraper.js"
   ]
 }
 ```
+
+## Todo
+* add better hooks for remote sync
+* better error checking
+* add a sleep mechanism so not constantly hammering battleNet
